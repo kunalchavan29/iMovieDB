@@ -7,33 +7,33 @@
 
 import SwiftUI
 import Combine
-import Refreshable
 
 struct MoviesView: View {
     @StateObject var viewModel: MovieListViewModel
     
-    var body: some View {
-        ScrollView {
-            LazyVStack {
-                ForEach(viewModel.items) { item in
-
-                        NavigationLink(destination: MovieDetailsView(movie: item)) {
-                            MoviesCellView(movie: item)
-                        }
-                        .padding()
-                        .onAppear {
-                            viewModel.loadMoreContentIfNeeded(currentItem: item)
-                        }
+    var body: some View {        
+        List {
+            
+            ForEach(viewModel.items) { item in
+                
+                NavigationLink(destination: MovieDetailsView(movie: item)) {
+                    MoviesCellView(movie: item)
                 }
-
-                if viewModel.isLoadingPage {
-                    ProgressView()
+                .padding()
+                .onAppear {
+                    viewModel.loadMoreContentIfNeeded(currentItem: item)
                 }
             }
+            
+            if viewModel.isLoadingPage {
+                ProgressView()
+            }
         }
+        .listStyle(.plain)
+        
         .navigationBarTitle(viewModel.type == .popular ? "Popular" : "Top Rated")
         .onAppear {
-//            viewModel.getMovies(page: 1)
+            //            viewModel.getMovies(page: 1)
         }
     }
 }
