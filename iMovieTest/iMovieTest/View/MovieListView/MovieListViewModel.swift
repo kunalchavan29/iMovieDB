@@ -60,10 +60,12 @@ class MovieListViewModel: ObservableObject {
             DispatchQueue.main.async {
                 switch response {
                 case .success(let response):
-                    if response.totalPages ?? 0 > response.page ?? 0 {
-                        self?.items += (response.results ?? [])
+                    let movies = response.results ?? []
+                    
+                    if self?.currentPage != 1, (response.totalPages ?? 0 > response.page ?? 0) {
+                        self?.items += movies
                     } else {
-                        self?.items = response.results ?? []
+                        self?.items = movies
                     }
                     self?.canLoadMorePages = (response.totalPages ?? 0) > response.page ?? 0
                     self?.isLoadingPage = false

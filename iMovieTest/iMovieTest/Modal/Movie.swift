@@ -51,6 +51,12 @@ extension Movie: Codable {
 extension Movie: Identifiable {
 }
 
+extension Movie: Comparable {
+    static func < (lhs: Movie, rhs: Movie) -> Bool {
+        return (lhs.id ?? 0) < (rhs.id ?? 0)
+    }
+}
+
 extension Movie {
     func mapToMO(movieEntity: MovieEntity) -> MovieEntity {
         movieEntity.id = Int32(self.id ?? 0)
