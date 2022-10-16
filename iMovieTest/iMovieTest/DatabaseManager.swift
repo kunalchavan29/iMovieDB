@@ -26,34 +26,18 @@ final class DatabaseManager: StorageProtocol {
     private init() {}
     
     static let shared = DatabaseManager()
-    private lazy var context: NSManagedObjectContext = {
-        return PersistenceController.shared.container.viewContext
-    }()
-    
-    private lazy var persistentContainer: NSPersistentContainer = {
-        return PersistenceController.shared.container
-    }()
     
     func getMovies(type: String) -> [Movie] {
+        let context = PersistenceController.shared.container.viewContext
         let request = MovieEntity.fetchRequest()
         request.predicate = NSPredicate(format: "type == %@", type)
+        let sort = NSSortDescriptor(key: "id", ascending: true)
+        request.sortDescriptors = [sort]
         do {
             let movies = try context.fetch(request)
             var movie = Movie()
             let result = movies.map({ movie.mapFromEntity(movieEntity: $0) })
             return result
-        } catch {
-            print(error)
-            return []
-        }
-    }
-    
-    func getMovieEntities() -> [MovieEntity] {
-        let context = PersistenceController.shared.container.viewContext
-        do {
-            let request = MovieEntity.fetchRequest()
-            let movies = try context.fetch(request)
-            return movies
         } catch {
             print(error)
             return []
@@ -78,8 +62,7 @@ final class DatabaseManager: StorageProtocol {
              topEntity.type = type
          }
         
-        try context.save()
-         
+        try context.save()         
     }
 }
 

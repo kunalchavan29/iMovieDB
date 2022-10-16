@@ -32,8 +32,6 @@ class MovieRepository: MovieRepositoryProtocol {
                     //save results locally
                     do {
                         try self.storage.saveOrUpdate(objects: response.results ?? [], type: type.rawValue)
-                        //TODO: Remove commented
-                        //let entities = DatabaseManager.shared.getMovieEntities()
                     } catch {
                         completion(.failure(error))
                     }
