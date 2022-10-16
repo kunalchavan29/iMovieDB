@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MovieDetailsView: View {
     @StateObject var viewModel: MovieDetailsViewModel
+    @State private var showVideoPlayer = false
     
     var body: some View {
         ScrollView {
@@ -29,6 +30,20 @@ struct MovieDetailsView: View {
                 CommentView(comment: $viewModel.comment, onSave: {
                     viewModel.saveComment()
                 })
+                
+                Button {
+                    self.showVideoPlayer = true
+                } label: {
+                    Text("Watch Trailer")
+                        .frame(height: 40)
+                        .frame(maxWidth: .infinity)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
+                .sheet(isPresented: $showVideoPlayer, onDismiss: { }) {
+                    PlayerContentView(vURL: URL(string: "https://bit.ly/swswift"))
+                }
             }
             .padding()
         }
@@ -46,8 +61,18 @@ struct CommentView: View {
     var body: some View {
         VStack(spacing: 16) {
             ZStack {
-                TextEditor(text: $comment)
-                Text(comment).opacity(0).padding(8)
+                ZStack(alignment: .leading) {
+                    TextEditor(text: $comment)
+                    //custom placeholder
+                    if comment.isEmpty {
+                        Text("Enter Comment")
+                            .foregroundColor(Color.gray)
+                            .padding(.horizontal, 8)
+                    }
+                }
+                Text(comment)
+                    .opacity(0)
+                    .padding(8)
                     .frame(minHeight: 40)
                     .lineLimit(8)
             }

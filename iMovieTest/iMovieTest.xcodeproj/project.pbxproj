@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B11FB45F28FC37A000380A09 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11FB45E28FC37A000380A09 /* PlayerView.swift */; };
 		B17AC81528FBE5B30045AF4D /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17AC81428FBE5B30045AF4D /* MovieDetailsViewModel.swift */; };
 		B17AC81B28FC27490045AF4D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17AC81A28FC27490045AF4D /* Extensions.swift */; };
 		B19EAFB428FAA16100AD473C /* iMovieTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EAFB328FAA16100AD473C /* iMovieTestApp.swift */; };
@@ -53,6 +54,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B11FB45E28FC37A000380A09 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		B17AC81428FBE5B30045AF4D /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
 		B17AC81A28FC27490045AF4D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B19EAFB028FAA16100AD473C /* iMovieTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMovieTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -251,6 +253,7 @@
 				B19EAFF428FAE80E00AD473C /* MovieListView */,
 				B19EAFFA28FAEF2700AD473C /* MovieDetails */,
 				B19EAFF528FAE81A00AD473C /* DashboardTabbarView */,
+				B11FB45E28FC37A000380A09 /* PlayerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				B19EB00F28FBD6BB00AD473C /* MovieRepository.swift in Sources */,
 				B17AC81528FBE5B30045AF4D /* MovieDetailsViewModel.swift in Sources */,
 				B19EAFB628FAA16100AD473C /* ContentView.swift in Sources */,
+				B11FB45F28FC37A000380A09 /* PlayerView.swift in Sources */,
 				B19EAFF928FAE89200AD473C /* MovieDetailsView.swift in Sources */,
 				B19EB00728FBC52800AD473C /* Rechability.swift in Sources */,
 				B19EAFE928FAABF800AD473C /* MovieListViewModel.swift in Sources */,
