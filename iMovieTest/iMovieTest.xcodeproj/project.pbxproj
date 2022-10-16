@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B17AC81528FBE5B30045AF4D /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17AC81428FBE5B30045AF4D /* MovieDetailsViewModel.swift */; };
+		B17AC81B28FC27490045AF4D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B17AC81A28FC27490045AF4D /* Extensions.swift */; };
 		B19EAFB428FAA16100AD473C /* iMovieTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EAFB328FAA16100AD473C /* iMovieTestApp.swift */; };
 		B19EAFB628FAA16100AD473C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B19EAFB528FAA16100AD473C /* ContentView.swift */; };
 		B19EAFB828FAA16500AD473C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B19EAFB728FAA16500AD473C /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		B17AC81428FBE5B30045AF4D /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
+		B17AC81A28FC27490045AF4D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B19EAFB028FAA16100AD473C /* iMovieTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMovieTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B19EAFB328FAA16100AD473C /* iMovieTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iMovieTestApp.swift; sourceTree = "<group>"; };
 		B19EAFB528FAA16100AD473C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -107,11 +109,54 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B19EAFA728FAA16100AD473C = {
+		B17AC81628FC26C70045AF4D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				B19EAFEE28FAC2FC00AD473C /* Constants.swift */,
+				B19EAFF028FAE0F600AD473C /* ImageLoader.swift */,
+				B19EB00628FBC52800AD473C /* Rechability.swift */,
+				B17AC81A28FC27490045AF4D /* Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		B17AC81728FC26E40045AF4D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B19EAFE228FAA2F100AD473C /* movieList.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B17AC81828FC26F60045AF4D /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B19EB00428FBC51C00AD473C /* DatabaseManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		B17AC81928FC27050045AF4D /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				B19EAFE628FAA98700AD473C /* MovieService.swift */,
+				B19EB00E28FBD6BB00AD473C /* MovieRepository.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		B17AC81C28FC27770045AF4D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
 				B19EB00A28FBCDC500AD473C /* MovieEntity+CoreDataClass.swift */,
 				B19EB00B28FBCDC500AD473C /* MovieEntity+CoreDataProperties.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		B19EAFA728FAA16100AD473C = {
+			isa = PBXGroup;
+			children = (
 				B19EAFB228FAA16100AD473C /* iMovieTest */,
 				B19EAFC828FAA16500AD473C /* iMovieTestTests */,
 				B19EAFD228FAA16500AD473C /* iMovieTestUITests */,
@@ -133,13 +178,10 @@
 			isa = PBXGroup;
 			children = (
 				B19EAFB328FAA16100AD473C /* iMovieTestApp.swift */,
-				B19EAFE228FAA2F100AD473C /* movieList.json */,
-				B19EAFEE28FAC2FC00AD473C /* Constants.swift */,
-				B19EAFF028FAE0F600AD473C /* ImageLoader.swift */,
-				B19EAFE628FAA98700AD473C /* MovieService.swift */,
-				B19EB00E28FBD6BB00AD473C /* MovieRepository.swift */,
-				B19EB00428FBC51C00AD473C /* DatabaseManager.swift */,
-				B19EB00628FBC52800AD473C /* Rechability.swift */,
+				B17AC81728FC26E40045AF4D /* Resources */,
+				B17AC81928FC27050045AF4D /* Service */,
+				B17AC81828FC26F60045AF4D /* Managers */,
+				B17AC81628FC26C70045AF4D /* Utils */,
 				B19EAFF728FAE83700AD473C /* View */,
 				B19EAFF628FAE82E00AD473C /* Modal */,
 				B19EAFB528FAA16100AD473C /* ContentView.swift */,
@@ -197,6 +239,7 @@
 		B19EAFF628FAE82E00AD473C /* Modal */ = {
 			isa = PBXGroup;
 			children = (
+				B17AC81C28FC27770045AF4D /* Entities */,
 				B19EAFE428FAA8AD00AD473C /* Movie.swift */,
 			);
 			path = Modal;
@@ -371,6 +414,7 @@
 				B19EAFF128FAE0F600AD473C /* ImageLoader.swift in Sources */,
 				B19EAFEF28FAC2FC00AD473C /* Constants.swift in Sources */,
 				B19EB00C28FBCDC500AD473C /* MovieEntity+CoreDataClass.swift in Sources */,
+				B17AC81B28FC27490045AF4D /* Extensions.swift in Sources */,
 				B19EAFE728FAA98700AD473C /* MovieService.swift in Sources */,
 				B19EAFED28FAB1FF00AD473C /* DashboardTabBarView.swift in Sources */,
 				B19EAFB428FAA16100AD473C /* iMovieTestApp.swift in Sources */,

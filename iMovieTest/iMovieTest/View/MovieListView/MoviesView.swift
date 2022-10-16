@@ -12,28 +12,39 @@ struct MoviesView: View {
     @StateObject var viewModel: MovieListViewModel    
     
     var body: some View {
-        List {
-            
-            ForEach(viewModel.items) { item in
-
-                NavigationLink(destination: MovieDetailsView(viewModel: MovieDetailsViewModel(movie: item, commentStorage: DatabaseManager.shared))) {
-                    MoviesCellView(movie: item)
+        VStack {
+            List {
+                
+                ForEach(viewModel.items) { item in
+                    
+                    NavigationLink(destination: MovieDetailsView(viewModel: MovieDetailsViewModel(movie: item, commentStorage: DatabaseManager.shared))) {
+                        MoviesCellView(movie: item)
+                    }
+                    .padding()
+                    .onAppear {
+                        viewModel.loadMoreContentIfNeeded(currentItem: item)
+                    }
                 }
-                .padding()
-                .onAppear {
-                    viewModel.loadMoreContentIfNeeded(currentItem: item)
+                
+                if viewModel.isLoadingPage {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
                 }
             }
-
-            if viewModel.isLoadingPage {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
+            .listStyle(.plain)
+            .modify {
+                if #available(iOS 15.0, *) {
+                    $0.refreshable {
+                        viewModel.onPullToRefresh()
+                    }
+                } else {
+                    // TODO: Fallback on earlier versions
                 }
             }
         }
-        .listStyle(.plain)
         
         .navigationBarTitle(viewModel.type == .popular ? "Popular" : "Top Rated")
         .alert(isPresented: $viewModel.showAlert) {

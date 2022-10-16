@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class MovieListViewModel: ObservableObject {
     @Published var items = [Movie]()
@@ -18,7 +19,7 @@ class MovieListViewModel: ObservableObject {
         }
     }
     
-    private var currentPage = 1
+    var currentPage = 1
     private var totalPages: Int?
     private var canLoadMorePages = true
     var type: MovieType = .popular
@@ -41,6 +42,13 @@ class MovieListViewModel: ObservableObject {
         if items.firstIndex(where: { $0.id == item.id }) == thresholdIndex {
             loadMoreContent(completion: {})
         }
+    }
+    
+    func onPullToRefresh() {
+        currentPage = 1
+        totalPages = nil
+        canLoadMorePages = true
+        loadMoreContent(completion: {})
     }
     
     func loadMoreContent(completion: @escaping () -> Void) {

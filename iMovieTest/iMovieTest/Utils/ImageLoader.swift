@@ -25,9 +25,10 @@ class ImageLoader: ObservableObject {
         
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
-            do {
-                if Reachability.isConnectedToNetwork() {
-                    let data = try Data(contentsOf: url)
+            if Reachability.isConnectedToNetwork() {
+                let configuration = URLSessionConfiguration.default
+                URLSession(configuration: configuration).dataTask(with: URLRequest(url: url)) { data, response, error in
+                    guard let data = data else {return}
                     guard let image = UIImage(data: data) else {
                         return
                     }
@@ -36,14 +37,13 @@ class ImageLoader: ObservableObject {
                     DispatchQueue.main.async { [weak self] in
                         self?.image = image
                     }
-                } else {
-                    let image = self.loadFromDirectory(imageName: url.lastPathComponent)
-                    DispatchQueue.main.async { [weak self] in
-                        self?.image = image
-                    }
+                    
+                }.resume()
+            } else {
+                let image = self.loadFromDirectory(imageName: url.lastPathComponent)
+                DispatchQueue.main.async { [weak self] in
+                    self?.image = image
                 }
-            } catch {
-                print(error.localizedDescription)
             }
         }
     }

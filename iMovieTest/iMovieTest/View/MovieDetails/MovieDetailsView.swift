@@ -15,6 +15,7 @@ struct MovieDetailsView: View {
             VStack(alignment: .leading) {
                 
                 MovieDetailImage(imageLoader: viewModel.imageLoader, imageURL: viewModel.movie.backdropURL)
+                    .cornerRadius(8)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 
                 
