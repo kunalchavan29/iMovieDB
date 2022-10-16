@@ -9,14 +9,14 @@ import SwiftUI
 import Combine
 
 struct MoviesView: View {
-    @StateObject var viewModel: MovieListViewModel
+    @StateObject var viewModel: MovieListViewModel    
     
-    var body: some View {        
+    var body: some View {
         List {
             
             ForEach(viewModel.items) { item in
-                
-                NavigationLink(destination: MovieDetailsView(movie: item)) {
+
+                NavigationLink(destination: MovieDetailsView(viewModel: MovieDetailsViewModel(movie: item, commentStorage: DatabaseManager.shared))) {
                     MoviesCellView(movie: item)
                 }
                 .padding()
@@ -24,16 +24,23 @@ struct MoviesView: View {
                     viewModel.loadMoreContentIfNeeded(currentItem: item)
                 }
             }
-            
+
             if viewModel.isLoadingPage {
-                ProgressView()
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
             }
         }
         .listStyle(.plain)
         
         .navigationBarTitle(viewModel.type == .popular ? "Popular" : "Top Rated")
+        .alert(isPresented: $viewModel.showAlert) {
+            Alert(title: Text("Alert"), message: Text(viewModel.errorMessage), dismissButton: .default(Text("Ok"), action: {
+            }))
+        }
         .onAppear {
-            //            viewModel.getMovies(page: 1)
         }
     }
 }

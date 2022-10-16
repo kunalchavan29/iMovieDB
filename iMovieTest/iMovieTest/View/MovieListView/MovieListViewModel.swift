@@ -11,12 +11,23 @@ import Combine
 class MovieListViewModel: ObservableObject {
     @Published var items = [Movie]()
     @Published var isLoadingPage = false
+    @Published var showAlert = false
+    @Published var errorMessage: String = "" {
+        didSet {
+            showAlert = true
+        }
+    }
+    
     private var currentPage = 1
+    private var totalPages: Int?
     private var canLoadMorePages = true
     var type: MovieType = .popular
     
+    var repository: MovieRepositoryProtocol
+    
     init(type: MovieType) {
         self.type = type
+        self.repository = MovieRepository(service: MovieService(), storage: DatabaseManager.shared)
         loadMoreContent(completion: {})
     }
     
@@ -32,32 +43,39 @@ class MovieListViewModel: ObservableObject {
         }
     }
     
-    func loadMoreContent(completion: () -> Void) {
+    func loadMoreContent(completion: @escaping () -> Void) {
         guard !isLoadingPage && canLoadMorePages else {
+            completion()
+            return
+        }
+        if let totalPages = totalPages, totalPages < currentPage {
+            self.errorMessage = "Reached at end of the list"
+            completion()
             return
         }
         
         isLoadingPage = true
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        let typeString = type == .popular ? "popular" : "top_rated"
         
-        let url = URL(string: "https://api.themoviedb.org/3/movie/\(typeString)?api_key=\(NetworkConstants.apiKey)&language=en-US&page=\(currentPage)")!
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map(\.data)
-            .decode(type: PaginationResponse<Movie>.self, decoder: decoder)
-            .receive(on: DispatchQueue.main)
-            .handleEvents(receiveOutput: { response in
-                print(response)
-                self.canLoadMorePages = response.totalPages ?? 0 >= self.currentPage
-                self.isLoadingPage = false
-                self.currentPage += 1
-            })
-            .map({ response in
-                return self.items + (response.results ?? [])
-            })
-            .catch({ _ in Just(self.items) })
-                    .assign(to: &$items)
+        repository.getAndSaveMovies(page: currentPage, type: type) {[weak self] response in
+            DispatchQueue.main.async {
+                switch response {
+                case .success(let response):
+                    if response.totalPages ?? 0 > response.page ?? 0 {
+                        self?.items += (response.results ?? [])
+                    } else {
+                        self?.items = response.results ?? []
+                    }
+                    self?.canLoadMorePages = (response.totalPages ?? 0) > response.page ?? 0
+                    self?.isLoadingPage = false
+                    self?.currentPage += 1
+                    self?.totalPages = response.totalPages
+                    
+                case .failure(let error):
+                    self?.errorMessage = error.localizedDescription
+                }
+                completion()
+            }
+        }
     }
     
 }

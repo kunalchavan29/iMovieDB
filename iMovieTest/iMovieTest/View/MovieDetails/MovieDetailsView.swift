@@ -8,30 +8,66 @@
 import SwiftUI
 
 struct MovieDetailsView: View {
-    let movie: Movie
-    let imageLoader = ImageLoader()
+    @StateObject var viewModel: MovieDetailsViewModel
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
                 
-                MovieDetailImage(imageLoader: imageLoader, imageURL: self.movie.backdropURL)
+                MovieDetailImage(imageLoader: viewModel.imageLoader, imageURL: viewModel.movie.backdropURL)
                     .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                 
                 
-                Text(movie.title ?? "")
+                Text(viewModel.movie.title ?? "")
                     .font(.title)
                 
                 Spacer().frame(height: 10)
                 
-                Text(movie.overview ?? "")
+                Text(viewModel.movie.overview ?? "")
                 
+                CommentView(comment: $viewModel.comment, onSave: {
+                    viewModel.saveComment()
+                })
             }
             .padding()
         }
-        .navigationBarTitle(movie.title ?? "")
+        .navigationBarTitle(viewModel.movie.title ?? "")
     }
 }
+
+struct CommentView: View {
+    @Binding var comment: String
+    var onSave: (() -> Void)?
+    var isEmpty: Bool {
+        return comment.isEmpty
+    }
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            ZStack {
+                TextEditor(text: $comment)
+                Text(comment).opacity(0).padding(8)
+                    .frame(minHeight: 40)
+                    .lineLimit(8)
+            }
+            .cornerRadius(8)
+            .shadow(radius: 1)
+            
+            Button {
+                onSave?()
+            } label: {
+                Text("Save")
+                    .frame(height: 40)
+                    .frame(maxWidth: .infinity)
+                    .foregroundColor(.white)
+                    .background(Color.orange)
+                    .cornerRadius(8)
+            }
+            .disabled(isEmpty)
+        }
+    }
+}
+
 
 struct MovieDetailImage: View {
     
@@ -55,6 +91,6 @@ struct MovieDetailImage: View {
 
 struct MovieDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        MovieDetailsView(movie: Movie.stubbedMovie)
+        MovieDetailsView(viewModel: MovieDetailsViewModel(movie: Movie.stubbedMovie, commentStorage: DatabaseManager.shared))
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-enum MovieType: Int {
+enum MovieType: String {
     case popular
     case topRated
 }

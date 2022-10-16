@@ -29,6 +29,7 @@ struct Movie {
     var voteCount: Int?
     var video: Bool?
     var voteAverage: Double?
+    var comment: String?
 }
 
 extension Movie {
@@ -48,6 +49,32 @@ extension Movie {
 extension Movie: Codable {
 }
 extension Movie: Identifiable {
+}
+
+extension Movie {
+    func mapToMO(movieEntity: MovieEntity) -> MovieEntity {
+        movieEntity.id = Int32(self.id ?? 0)
+        movieEntity.backdropPath = self.backdropPath
+        movieEntity.overview = self.overview
+        movieEntity.posterPath = self.posterPath
+        movieEntity.releaseDate = self.releaseDate ?? ""
+        movieEntity.title = self.title
+        movieEntity.video = self.video ?? false
+        
+        return movieEntity
+    }
+    
+    mutating func mapFromEntity(movieEntity: MovieEntity) -> Movie {
+        self.id = Int(movieEntity.id )
+        self.backdropPath = movieEntity.backdropPath
+        self.overview = movieEntity.overview
+        self.posterPath = movieEntity.posterPath
+        self.releaseDate = movieEntity.releaseDate as String?
+        self.title = movieEntity.title
+        self.video = movieEntity.video
+        
+        return self
+    }
 }
 
 extension Movie {
